@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+        <item name="colorPrimary">@color/mediumPink</item>
+        <item name="android:navigationBarColor">@color/mediumPink</item>
+        <item name="android:statusBarColor">@color/lightPink</item>
+        <item name="android:textColorPrimary">@color/lightPink</item>
+        <item name="android:textColorSecondary">@color/lightPink</item>
+    </style>
+</resources>

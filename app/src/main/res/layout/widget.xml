@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightPink"
+    android:padding="8dp">
+
+    <TextView android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="Jon"
+        android:textSize="24dp"
+        android:layout_alignParentLeft="true"
+        />
+
+    <LinearLayout android:id="@+id/button_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/veryDarkPink"
+        android:layout_alignParentRight="true">
+
+        <Button android:id="@+id/button_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textSize="30dp"
+            android:textColor="@color/lightPink"
+            android:background="@color/darkPink"
+            android:layout_margin="3dp"/>
+
+        <Button android:id="@+id/button_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/lightPink"
+            android:textSize="30dp"
+            android:background="@color/darkPink"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:text="-"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
