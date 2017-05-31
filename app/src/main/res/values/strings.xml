@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">The Beer Closet</string>
+    <string name="nameDialog">What is your name?</string>
+    <string name="spunk">Mr. Spunk</string>
+    <string name="ok">OK</string>
 </resources>
