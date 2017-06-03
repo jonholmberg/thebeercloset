@@ -17,15 +17,22 @@ import today.spunk.thebeercloset.R
  */
 class NameDialogFragment(val callback : ((String) -> Unit)? = null) : DialogFragment() {
 
-    var text : String = ""
+    var text = ""
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = activity.layoutInflater.inflate(R.layout.dialog_name, null)
         val dialog = AlertDialog.Builder(activity).setTitle(R.string.nameDialog)
                 .setView(view)
-                .setNeutralButton(R.string.ok, { _, _ ->
-                    text = view.find<EditText>(R.id.nameView).text.toString()
-                }).create()
+                .setPositiveButton(R.string.ok, {_, _ -> }).create()
+
+        dialog.setOnShowListener { dialog ->
+            val button = (dialog as? AlertDialog)?.getButton(AlertDialog.BUTTON_POSITIVE)
+            button?.setOnClickListener { _ ->
+                text = view.find<EditText>(R.id.nameView).text.toString()
+                if (text != "") {dismiss()}
+            }
+        }
+
         return dialog
     }
 
