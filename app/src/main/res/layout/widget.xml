@@ -29,6 +29,17 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true">
 
+            <Button android:id="@+id/button_minus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightPink"
+                android:textSize="30dp"
+                android:background="@color/darkPink"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:text="-"/>
+
             <Button android:id="@+id/button_plus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,17 +48,6 @@
                 android:textColor="@color/lightPink"
                 android:background="@color/darkPink"
                 android:layout_margin="3dp"/>
-
-            <Button android:id="@+id/button_minus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/lightPink"
-                android:textSize="30dp"
-                android:background="@color/darkPink"
-                android:layout_marginRight="3dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:text="-"/>
 
         </LinearLayout>
 

@@ -48,33 +48,20 @@ class BeerActivity : AppCompatActivity() {
         setupData()
 
         if (name == null) {
-            NameDialogFragment({ name -> addName(name) }).show(supportFragmentManager, "NameDialogFragment")
+            NameDialogFragment({ name ->
+                addName(name)
+                BeerActivity.name = name
+                supportActionBar?.title = "The Beer Closet: ${BeerActivity.name}"
+                getTotalBeers()}).show(supportFragmentManager, "NameDialogFragment")
+        } else {
+            getTotalBeers()
+            supportActionBar?.title = "The Beer Closet: ${BeerActivity.name}"
         }
-
-        supportActionBar?.title = "The Beer Closet: $name"
-
-        BeerManager().addBeers(
-                name = name,
-                beers = 0,
-                success = { totalBeers ->
-                    beers = totalBeers
-                    val appWidgetManager = AppWidgetManager.getInstance(this)
-                    val remoteViews = RemoteViews(this.packageName, R.layout.widget)
-                    val widget = ComponentName(this, BeerClosetWidgetProvider::class.java)
-                    remoteViews.setTextViewText(R.id.name_beers, "${name ?: "None"}: ${beers ?: "-"}")
-                    appWidgetManager.updateAppWidget(widget, remoteViews)
-                },
-                failure = {})
     }
 
     private fun setSwipeListener() {
         swipeLayout.setOnRefreshListener {
             webview.loadUrl(beerClosetUrl)
-            name?.also { name ->
-                    BeerManager().addBeers(name, 1,
-                            success = { totalBeers -> toast("Success!")},
-                            failure = { toast("Failure!")})
-            }
             swipeLayout.isRefreshing = false
         }
     }
@@ -85,5 +72,20 @@ class BeerActivity : AppCompatActivity() {
 
     private fun setupData() {
         name = sharedPreferences.getString(NAME_KEY, null)
+    }
+
+    private fun getTotalBeers() {
+        BeerManager().addBeers(
+                name = BeerActivity.name,
+                beers = 0,
+                success = { totalBeers ->
+                    beers = totalBeers
+                    val appWidgetManager = AppWidgetManager.getInstance(this)
+                    val remoteViews = RemoteViews(this.packageName, R.layout.widget)
+                    val widget = ComponentName(this, BeerClosetWidgetProvider::class.java)
+                    remoteViews.setTextViewText(R.id.name_beers, "${BeerActivity.name ?: "None"}: ${beers ?: "-"}")
+                    appWidgetManager.updateAppWidget(widget, remoteViews)
+                },
+                failure = {})
     }
 }
