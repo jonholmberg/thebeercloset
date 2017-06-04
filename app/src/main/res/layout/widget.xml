@@ -14,10 +14,11 @@
         <TextView android:id="@+id/name_beers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:layout_centerInParent="true"
             android:text="Jon"
             android:textSize="24dp"
             android:layout_alignParentLeft="true"
+            android:fontFamily=""
             />
 
         <LinearLayout android:id="@+id/button_layout"
@@ -25,7 +26,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="@color/veryDarkPink"
-            android:layout_alignParentRight="true">
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true">
 
             <Button android:id="@+id/button_plus"
                 android:layout_width="wrap_content"

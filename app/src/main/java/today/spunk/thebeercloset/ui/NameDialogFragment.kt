@@ -21,7 +21,7 @@ class NameDialogFragment(val callback : ((String) -> Unit)? = null) : DialogFrag
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = activity.layoutInflater.inflate(R.layout.dialog_name, null)
-        val dialog = AlertDialog.Builder(activity).setTitle(R.string.nameDialog)
+        var dialog = AlertDialog.Builder(activity).setTitle(R.string.nameDialog)
                 .setView(view)
                 .setPositiveButton(R.string.ok, {_, _ -> }).create()
 
