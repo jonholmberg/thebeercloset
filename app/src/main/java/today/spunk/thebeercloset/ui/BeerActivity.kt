@@ -7,12 +7,16 @@ import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
+import android.util.Log
 import android.webkit.*
 import android.widget.RemoteViews
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 import today.spunk.thebeercloset.R
 import today.spunk.thebeercloset.managers.BeerManager
+import today.spunk.thebeercloset.store.BeerStore
+import today.spunk.thebeercloset.utils.LogKeys
+import today.spunk.thebeercloset.utils.SharedPrefKeys
 import today.spunk.thebeercloset.widget.BeerClosetWidgetProvider
 
 class BeerActivity : AppCompatActivity() {
@@ -22,12 +26,6 @@ class BeerActivity : AppCompatActivity() {
 
     val sharedPreferences : SharedPreferences by lazy { getPreferences(Context.MODE_PRIVATE) }
     val beerClosetUrl = "http://thebeercloset.spunk.today"
-
-    companion object {
-        var name: String? = null
-        var beers: String? = null
-        val NAME_KEY = "nameKey"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,15 +45,15 @@ class BeerActivity : AppCompatActivity() {
 
         setupData()
 
-        if (name == null) {
+        if (BeerStore.name == null) {
             NameDialogFragment({ name ->
                 addName(name)
-                BeerActivity.name = name
-                supportActionBar?.title = "The Beer Closet: ${BeerActivity.name}"
+                BeerStore.name = name
+                supportActionBar?.title = "The Beer Closet: ${BeerStore.name}"
                 getTotalBeers()}).show(supportFragmentManager, "NameDialogFragment")
         } else {
             getTotalBeers()
-            supportActionBar?.title = "The Beer Closet: ${BeerActivity.name}"
+            supportActionBar?.title = "The Beer Closet: ${BeerStore.name}"
         }
     }
 
@@ -67,25 +65,27 @@ class BeerActivity : AppCompatActivity() {
     }
 
     private fun addName(name : String) {
-        sharedPreferences.edit().putString(NAME_KEY, name).apply()
+        sharedPreferences.edit().putString(SharedPrefKeys.NAME.key, name).apply()
     }
 
     private fun setupData() {
-        name = sharedPreferences.getString(NAME_KEY, null)
+        BeerStore.name = sharedPreferences.getString(SharedPrefKeys.NAME.key, null)
     }
 
     private fun getTotalBeers() {
         BeerManager().addBeers(
-                name = BeerActivity.name,
+                name = BeerStore.name,
                 beers = 0,
                 success = { totalBeers ->
-                    beers = totalBeers
+                    BeerStore.beers = totalBeers
                     val appWidgetManager = AppWidgetManager.getInstance(this)
                     val remoteViews = RemoteViews(this.packageName, R.layout.widget)
                     val widget = ComponentName(this, BeerClosetWidgetProvider::class.java)
-                    remoteViews.setTextViewText(R.id.name_beers, "${BeerActivity.name ?: "None"}: ${beers ?: "-"}")
+                    remoteViews.setTextViewText(R.id.name_beers, "${BeerStore.name?: "Mr. Spunk"}: ${BeerStore.name ?: "-"}")
                     appWidgetManager.updateAppWidget(widget, remoteViews)
                 },
-                failure = {})
+                failure = {
+                    Log.d(LogKeys.BeerActivity.tag, "Total beers failed!")
+                })
     }
 }

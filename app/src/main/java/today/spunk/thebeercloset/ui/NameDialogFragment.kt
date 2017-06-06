@@ -2,14 +2,11 @@ package today.spunk.thebeercloset.ui
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.widget.EditText
 import org.jetbrains.anko.find
-import org.jetbrains.anko.support.v4.find
 import today.spunk.thebeercloset.R
 
 /**
@@ -32,7 +29,6 @@ class NameDialogFragment(val callback : ((String) -> Unit)? = null) : DialogFrag
                 if (text != "") {dismiss()}
             }
         }
-
         return dialog
     }
 

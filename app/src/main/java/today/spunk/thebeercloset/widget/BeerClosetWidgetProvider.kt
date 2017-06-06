@@ -10,6 +10,9 @@ import today.spunk.thebeercloset.R
 import today.spunk.thebeercloset.managers.BeerManager
 import today.spunk.thebeercloset.ui.BeerActivity
 import android.content.ComponentName
+import android.util.Log
+import today.spunk.thebeercloset.store.BeerStore
+import today.spunk.thebeercloset.utils.LogKeys
 import today.spunk.thebeercloset.utils.WidgetRequest
 
 
@@ -27,7 +30,7 @@ class BeerClosetWidgetProvider : AppWidgetProvider() {
             val appWidgetId = appWidgetIds?.get(i)
             appWidgetId?.let {
                 val views = RemoteViews(context?.packageName, R.layout.widget)
-                views.setTextViewText(R.id.name_beers, "${BeerActivity.name ?: "None"}: ${BeerActivity.beers ?: "-"}")
+                views.setTextViewText(R.id.name_beers, "${BeerStore.name ?: "None"}: ${BeerStore.beers ?: "-"}")
 
                 val buttonPlusPendingIntent = PendingIntent.getBroadcast(context, 0, Intent(context, javaClass).setAction(WidgetRequest.ButtonPlus.request), PendingIntent.FLAG_UPDATE_CURRENT)
                 val buttonMinusPendingIntent = PendingIntent.getBroadcast(context, 1, Intent(context, javaClass).setAction(WidgetRequest.ButtonMinus.request), PendingIntent.FLAG_UPDATE_CURRENT)
@@ -45,23 +48,27 @@ class BeerClosetWidgetProvider : AppWidgetProvider() {
         when (intent?.action) {
             WidgetRequest.ButtonPlus.request ->
                     beerManager.addBeers(
-                            BeerActivity.name,
-                            1,
+                            name = BeerStore.name,
+                            beers = 1,
                             success = { totalBeers ->
-                                BeerActivity.beers = totalBeers
+                                BeerStore.beers = totalBeers
                                 onUpdate(context)
                             },
-                            failure = {}
+                            failure = {
+                                Log.d(LogKeys.BeerWidget.tag, "Couldn't increment beers for ${BeerStore.name}")
+                            }
                     )
             WidgetRequest.ButtonMinus.request ->
                     beerManager.addBeers(
-                            BeerActivity.name,
-                            -1,
+                            name = BeerStore.name,
+                            beers = -1,
                             success = { totalBeers ->
-                                BeerActivity.beers = totalBeers
+                                BeerStore.beers = totalBeers
                                 onUpdate(context)
                             },
-                            failure = {}
+                            failure = {
+                                Log.d(LogKeys.BeerWidget.tag, "Couldn't decrement beers for ${BeerStore.name}")
+                            }
                     )
         }
     }

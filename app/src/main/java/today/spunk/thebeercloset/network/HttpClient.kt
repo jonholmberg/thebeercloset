@@ -8,6 +8,7 @@ import today.spunk.thebeercloset.extensions.getBodyAndClose
 import today.spunk.thebeercloset.network.utils.HttpMethod
 import today.spunk.thebeercloset.network.utils.HttpResponse
 import today.spunk.thebeercloset.utils.FailureBlock
+import today.spunk.thebeercloset.utils.LogKeys
 import today.spunk.thebeercloset.utils.SuccessBlock
 
 /**
@@ -37,10 +38,10 @@ object HttpClient {
     private fun onResponse(method: HttpMethod, response: HttpResponse, success: SuccessBlock? = null,
                            failure: FailureBlock? = null, path: HttpUrl?) {
         if (response.success) {
-            Log.d("BEER CLOSET", "Successful $method request to $path")
+            Log.d(LogKeys.HttpClient.tag, "Successful $method request to $path")
             success?.invoke(response.body)
         } else {
-            Log.d("BEER CLOSET", "Error in $method request to $path")
+            Log.d(LogKeys.HttpClient.tag, "Error in $method request to $path")
             failure?.invoke()
         }
     }
