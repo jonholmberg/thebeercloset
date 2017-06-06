@@ -81,7 +81,7 @@ class BeerActivity : AppCompatActivity() {
                     val appWidgetManager = AppWidgetManager.getInstance(this)
                     val remoteViews = RemoteViews(this.packageName, R.layout.widget)
                     val widget = ComponentName(this, BeerClosetWidgetProvider::class.java)
-                    remoteViews.setTextViewText(R.id.name_beers, "${BeerStore.name?: "Mr. Spunk"}: ${BeerStore.name ?: "-"}")
+                    remoteViews.setTextViewText(R.id.name_beers, "${BeerStore.name?: "Mr. Spunk"}: ${BeerStore.beers ?: "Not enough"}")
                     appWidgetManager.updateAppWidget(widget, remoteViews)
                 },
                 failure = {
