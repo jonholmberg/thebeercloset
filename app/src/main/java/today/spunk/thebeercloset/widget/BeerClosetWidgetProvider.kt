@@ -7,12 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import today.spunk.thebeercloset.R
-import today.spunk.thebeercloset.managers.BeerManager
-import today.spunk.thebeercloset.ui.BeerActivity
 import android.content.ComponentName
-import android.util.Log
+import today.spunk.thebeercloset.network.HttpClient
 import today.spunk.thebeercloset.store.BeerStore
-import today.spunk.thebeercloset.utils.LogKeys
 import today.spunk.thebeercloset.utils.WidgetRequest
 
 
@@ -20,8 +17,6 @@ import today.spunk.thebeercloset.utils.WidgetRequest
  * Created by Jonna on 26/05/2017.
  */
 class BeerClosetWidgetProvider : AppWidgetProvider() {
-
-    val beerManager by lazy {BeerManager()}
 
     override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
         val length = appWidgetIds?.size ?: 0
@@ -47,29 +42,15 @@ class BeerClosetWidgetProvider : AppWidgetProvider() {
 
         when (intent?.action) {
             WidgetRequest.ButtonPlus.request ->
-                    beerManager.addBeers(
-                            name = BeerStore.name,
-                            beers = 1,
-                            success = { totalBeers ->
-                                BeerStore.beers = totalBeers
-                                onUpdate(context)
-                            },
-                            failure = {
-                                Log.d(LogKeys.BeerWidget.tag, "Couldn't increment beers for ${BeerStore.name}")
-                            }
-                    )
+                HttpClient.simpleAddBeer(BeerStore.name ?: "",1) { totalBeers ->
+                    BeerStore.beers = totalBeers
+                    onUpdate(context)
+                }
             WidgetRequest.ButtonMinus.request ->
-                    beerManager.addBeers(
-                            name = BeerStore.name,
-                            beers = -1,
-                            success = { totalBeers ->
-                                BeerStore.beers = totalBeers
-                                onUpdate(context)
-                            },
-                            failure = {
-                                Log.d(LogKeys.BeerWidget.tag, "Couldn't decrement beers for ${BeerStore.name}")
-                            }
-                    )
+                HttpClient.simpleAddBeer(BeerStore.name ?: "", -1) { totalBeers ->
+                    BeerStore.beers = totalBeers
+                    onUpdate(context)
+                }
         }
     }
 

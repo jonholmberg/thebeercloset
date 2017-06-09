@@ -7,15 +7,13 @@ import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
-import android.util.Log
 import android.webkit.*
 import android.widget.RemoteViews
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 import today.spunk.thebeercloset.R
-import today.spunk.thebeercloset.managers.BeerManager
+import today.spunk.thebeercloset.network.HttpClient
 import today.spunk.thebeercloset.store.BeerStore
-import today.spunk.thebeercloset.utils.LogKeys
 import today.spunk.thebeercloset.utils.SharedPrefKeys
 import today.spunk.thebeercloset.widget.BeerClosetWidgetProvider
 
@@ -73,19 +71,13 @@ class BeerActivity : AppCompatActivity() {
     }
 
     private fun getTotalBeers() {
-        BeerManager().addBeers(
-                name = BeerStore.name,
-                beers = 0,
-                success = { totalBeers ->
-                    BeerStore.beers = totalBeers
-                    val appWidgetManager = AppWidgetManager.getInstance(this)
-                    val remoteViews = RemoteViews(this.packageName, R.layout.widget)
-                    val widget = ComponentName(this, BeerClosetWidgetProvider::class.java)
-                    remoteViews.setTextViewText(R.id.name_beers, "${BeerStore.name?: "Mr. Spunk"}: ${BeerStore.beers ?: "Not enough"}")
-                    appWidgetManager.updateAppWidget(widget, remoteViews)
-                },
-                failure = {
-                    Log.d(LogKeys.BeerActivity.tag, "Total beers failed!")
-                })
+        HttpClient.simpleAddBeer(BeerStore.name ?: "") { totalBeers ->
+            BeerStore.beers = totalBeers
+            val appWidgetManager = AppWidgetManager.getInstance(this)
+            val remoteViews = RemoteViews(this.packageName, R.layout.widget)
+            val widget = ComponentName(this, BeerClosetWidgetProvider::class.java)
+            remoteViews.setTextViewText(R.id.name_beers, "${BeerStore.name ?: "Mr. Spunk"}: ${BeerStore.beers ?: "Not enough"}")
+            appWidgetManager.updateAppWidget(widget, remoteViews)
+        }
     }
 }
