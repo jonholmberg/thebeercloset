@@ -8,7 +8,6 @@ import android.content.Intent
 import android.widget.RemoteViews
 import today.spunk.thebeercloset.R
 import today.spunk.thebeercloset.managers.BeerManager
-import today.spunk.thebeercloset.ui.BeerActivity
 import android.content.ComponentName
 import android.util.Log
 import today.spunk.thebeercloset.store.BeerStore
@@ -21,13 +20,13 @@ import today.spunk.thebeercloset.utils.WidgetRequest
  */
 class BeerClosetWidgetProvider : AppWidgetProvider() {
 
-    val beerManager by lazy {BeerManager()}
+    val beerManager by lazy { BeerManager() }
 
     override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
         val length = appWidgetIds?.size ?: 0
 
-        for (i in 0..length-1) {
-            val appWidgetId = appWidgetIds?.get(i)
+        (0 until length).forEach {
+            val appWidgetId = appWidgetIds?.get(it)
             appWidgetId?.let {
                 val views = RemoteViews(context?.packageName, R.layout.widget)
                 views.setTextViewText(R.id.name_beers, "${BeerStore.name ?: "None"}: ${BeerStore.beers ?: "-"}")

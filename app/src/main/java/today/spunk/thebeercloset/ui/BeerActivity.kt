@@ -24,7 +24,7 @@ class BeerActivity : AppCompatActivity() {
     val webview by lazy { find<WebView>(R.id.webview) }
     val swipeLayout by lazy { find<SwipeRefreshLayout>(R.id.swipeLayout)}
 
-    val sharedPreferences : SharedPreferences by lazy { getPreferences(Context.MODE_PRIVATE) }
+    val sharedPreferences: SharedPreferences by lazy { getPreferences(Context.MODE_PRIVATE) }
     val beerClosetUrl = "http://thebeercloset.spunk.today"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +81,7 @@ class BeerActivity : AppCompatActivity() {
                     val appWidgetManager = AppWidgetManager.getInstance(this)
                     val remoteViews = RemoteViews(this.packageName, R.layout.widget)
                     val widget = ComponentName(this, BeerClosetWidgetProvider::class.java)
-                    remoteViews.setTextViewText(R.id.name_beers, "${BeerStore.name?: "Mr. Spunk"}: ${BeerStore.beers ?: "Not enough"}")
+                    remoteViews.setTextViewText(R.id.name_beers, "${BeerStore.name ?: "Mr. Spunk"}: ${BeerStore.beers ?: "Not enough"}")
                     appWidgetManager.updateAppWidget(widget, remoteViews)
                 },
                 failure = {

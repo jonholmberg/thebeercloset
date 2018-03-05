@@ -25,6 +25,16 @@
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/widget_provider" />
         </receiver>
+        <receiver android:name=".network.BeerServiceReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".widget.BeerService"
+            android:label="Widget service"
+            android:permission="android.permission.BIND_JOB_SERVICE" >
+        </service>
     </application>
 
 
